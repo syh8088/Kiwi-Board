@@ -4,9 +4,7 @@ server:
 spring:
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
-    url:
-    username:
-    password: 
+
     sql-script-encoding: utf-8
 
   jpa:

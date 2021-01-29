@@ -16,7 +16,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> saveMember(@RequestBody SaveMemberRequest saveMemberRequest) {
 
         memberService.saveMember(saveMemberRequest);
