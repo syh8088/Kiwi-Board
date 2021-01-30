@@ -2,7 +2,7 @@ package kiwi.board.board.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
-import kiwi.board.board.model.Board;
+import kiwi.board.board.model.entity.Board;
 import kiwi.board.board.model.QBoard;
 import kiwi.board.board.model.request.BoardsRequest;
 import org.apache.logging.log4j.util.Strings;

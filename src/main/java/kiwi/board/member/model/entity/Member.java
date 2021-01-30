@@ -3,7 +3,9 @@ package kiwi.board.member.model.entity;
 import kiwi.board.common.model.entity.Common;
 import kiwi.board.member.model.request.SaveMemberRequest;
 import kiwi.board.role.model.entity.Role;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends Common {
 
     @Id
