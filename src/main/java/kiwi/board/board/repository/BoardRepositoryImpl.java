@@ -5,6 +5,7 @@ import com.querydsl.jpa.JPQLQuery;
 import kiwi.board.board.model.entity.Board;
 import kiwi.board.board.model.QBoard;
 import kiwi.board.board.model.request.BoardsRequest;
+import kiwi.board.member.model.entity.QMember;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -19,6 +20,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
      */
 
     QBoard qBoard = QBoard.board;
+    QMember qMember = QMember.member;
 
     public BoardRepositoryImpl() {
         super(Board.class);
@@ -52,7 +54,9 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
             booleanBuilder.and(qBoard.title.like("%" + boardsRequest.getTitle() + "%"));
         }
 
-        return from(qBoard).where(booleanBuilder);
+        return from(qBoard)
+                .leftJoin(qBoard.member, qMember).fetchJoin()
+                .where(booleanBuilder);
     }
 
 /*    @Override

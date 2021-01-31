@@ -8,12 +8,14 @@ import kiwi.board.board.model.response.BoardsResponse;
 import kiwi.board.board.repository.BoardRepository;
 import kiwi.board.common.utils.BeanUtils;
 import kiwi.board.member.model.entity.Member;
+import kiwi.board.member.model.response.MemberResponse;
 import kiwi.board.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +32,27 @@ public class BoardService {
         long countBoards = boardRepository.selectCountBoards(boardsRequest);
         List<Board> boards = boardRepository.selectBoards(boardsRequest);
 
-        List<BoardResponse> boardResponses = BeanUtils.copyProperties(boards, BoardResponse.class);
+        List<BoardResponse> boardResponses = boards.stream()
+                .map(board -> {
+                    BoardResponse boardResponse = new BoardResponse();
+                    boardResponse.setBoardNo(board.getBoardNo());
+                    boardResponse.setTitle(board.getTitle());
+                    boardResponse.setContent(board.getContent());
+
+                    Member member = board.getMember();
+
+                    MemberResponse memberResponse = new MemberResponse();
+                    memberResponse.setMemberNo(member.getMemberNo());
+                    memberResponse.setId(member.getId());
+                    memberResponse.setName(member.getName());
+                    memberResponse.setEmail(member.getEmail());
+
+                    boardResponse.setMemberResponse(memberResponse);
+
+                    return boardResponse;
+                }).collect(Collectors.toList());
+
+        //List<BoardResponse> boardResponses = BeanUtils.copyProperties(boards, BoardResponse.class);
 
         int totalPages = (int) (countBoards / boardsRequest.getLimit());
         if (countBoards % boardsRequest.getLimit() > 0)
