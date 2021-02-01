@@ -6,6 +6,8 @@ spring:
     driverClassName: org.mariadb.jdbc.Driver
 
     sql-script-encoding: utf-8
+  messages:
+    basename: messages/messages, messages/error
 
   jpa:
     hibernate:
@@ -22,8 +24,7 @@ logging:
   level:
     org:
       hibernate:
-        type: trace
-
+      type: trace
 app:
   oauth:
     jwt:

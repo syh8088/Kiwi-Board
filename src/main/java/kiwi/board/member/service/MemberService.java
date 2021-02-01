@@ -26,4 +26,12 @@ public class MemberService {
         Member member = Member.createMember(saveMemberRequest, clientRole);
         memberRepository.save(member);
     }
+
+    public boolean isAlreadyRegisteredId(String id) {
+        return memberRepository.findById(id) != null;
+    }
+
+    public boolean isAlreadyRegisteredEmail(String email) {
+        return memberRepository.findByEmail(email) != null;
+    }
 }

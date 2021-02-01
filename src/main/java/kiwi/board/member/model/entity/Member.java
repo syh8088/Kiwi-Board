@@ -1,5 +1,6 @@
 package kiwi.board.member.model.entity;
 
+import kiwi.board.annotation.Encrypt;
 import kiwi.board.common.model.entity.Common;
 import kiwi.board.member.model.request.SaveMemberRequest;
 import kiwi.board.role.model.entity.Role;
@@ -24,6 +25,7 @@ public class Member extends Common {
 
     private String id;
 
+    @Encrypt
     private String password;
 
     private String name;
