@@ -1,4 +1,4 @@
-package kiwi.board.common.config.handler;
+package kiwi.board.common.config.handler.mybatis;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.ibatis.type.JdbcType;
