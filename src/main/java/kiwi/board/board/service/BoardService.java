@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,8 +37,10 @@ public class BoardService {
         long countBoards = boardRepository.selectCountBoards(boardsRequest);
         List<Board> boards = boardRepository.selectBoards(boardsRequest);
 
+        AtomicInteger index = new AtomicInteger();
         List<BoardResponse> boardResponses = boards.stream()
-                .map(this::copyBoardToBoardResponse).collect(Collectors.toList());
+                .map(board -> copyBoardToBoardResponse(board, index.getAndIncrement(), boardsRequest.getLimit(), boardsRequest.getOffset(), countBoards))
+                .collect(Collectors.toList());
 
         //List<BoardResponse> boardResponses = BeanUtils.copyProperties(boards, BoardResponse.class);
 
@@ -54,14 +57,20 @@ public class BoardService {
         return boardsResponse;
     }
 
-    private BoardResponse copyBoardToBoardResponse(Board board) {
+    private BoardResponse copyBoardToBoardResponse(Board board, int i , Long limit, Long offset, Long countBoards) {
 
         BoardResponse boardResponse = new BoardResponse();
+
+        if (offset != null && countBoards != null) {
+            boardResponse.setNumber(countBoards - (limit * (offset - 1)) - i);
+        }
+
         boardResponse.setBoardNo(board.getBoardNo());
         boardResponse.setTitle(board.getTitle());
         boardResponse.setContent(board.getContent());
         boardResponse.setCreatedAt(board.getCreatedAt());
         boardResponse.setUpdatedAt(board.getUpdatedAt());
+        boardResponse.setUseYn(board.getUseYn());
 
         Member member = board.getMember();
 
@@ -81,7 +90,7 @@ public class BoardService {
         Board board = boardRepository.selectByBoardNoAndUseYn(boardNo, true);
         if (board == null) return null;
 
-        return copyBoardToBoardResponse(board);
+        return copyBoardToBoardResponse(board, 0, null, null, null);
     }
 
     @Transactional

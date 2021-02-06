@@ -9,6 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardResponse extends CommonResponse {
+
+    @ApiModelProperty(value = "게시글 번호", position = 10)
+    private long number;
+
     @ApiModelProperty(value = "게시글 번호", position = 10)
     private long boardNo;
 
