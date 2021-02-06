@@ -22,7 +22,7 @@ public class MemberController {
     private final Validator validator;
 
     @PostMapping
-    @ApiOperation(value = "회원가입", notes = "회원가입을 합니다. ")
+    @ApiOperation(value = "회원가입", notes = "회원가입을 합니다.")
     public ResponseEntity<?> saveMember(@RequestBody SaveMemberRequest saveMemberRequest) {
 
         validator.saveMember(saveMemberRequest);

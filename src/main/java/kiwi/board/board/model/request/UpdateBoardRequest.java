@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SaveBoardRequest {
+public class UpdateBoardRequest {
+
     @ApiModelProperty(value = "제목", required = true, position = 10)
     private String title;
 
