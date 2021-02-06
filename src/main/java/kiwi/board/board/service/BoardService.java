@@ -37,24 +37,7 @@ public class BoardService {
         List<Board> boards = boardRepository.selectBoards(boardsRequest);
 
         List<BoardResponse> boardResponses = boards.stream()
-                .map(board -> {
-                    BoardResponse boardResponse = new BoardResponse();
-                    boardResponse.setBoardNo(board.getBoardNo());
-                    boardResponse.setTitle(board.getTitle());
-                    boardResponse.setContent(board.getContent());
-
-                    Member member = board.getMember();
-
-                    MemberResponse memberResponse = new MemberResponse();
-                    memberResponse.setMemberNo(member.getMemberNo());
-                    memberResponse.setId(member.getId());
-                    memberResponse.setName(member.getName());
-                    memberResponse.setEmail(member.getEmail());
-
-                    boardResponse.setMemberResponse(memberResponse);
-
-                    return boardResponse;
-                }).collect(Collectors.toList());
+                .map(this::copyBoardToBoardResponse).collect(Collectors.toList());
 
         //List<BoardResponse> boardResponses = BeanUtils.copyProperties(boards, BoardResponse.class);
 
@@ -71,17 +54,34 @@ public class BoardService {
         return boardsResponse;
     }
 
+    private BoardResponse copyBoardToBoardResponse(Board board) {
+
+        BoardResponse boardResponse = new BoardResponse();
+        boardResponse.setBoardNo(board.getBoardNo());
+        boardResponse.setTitle(board.getTitle());
+        boardResponse.setContent(board.getContent());
+        boardResponse.setCreatedAt(board.getCreatedAt());
+        boardResponse.setUpdatedAt(board.getUpdatedAt());
+
+        Member member = board.getMember();
+
+        MemberResponse memberResponse = new MemberResponse();
+        memberResponse.setMemberNo(member.getMemberNo());
+        memberResponse.setId(member.getId());
+        memberResponse.setName(member.getName());
+        memberResponse.setEmail(member.getEmail());
+
+        boardResponse.setMemberResponse(memberResponse);
+
+        return boardResponse;
+    }
+
     public BoardResponse getBoard(long boardNo) {
-        System.out.println(TransactionSynchronizationManager.getCurrentTransactionName());
-        Board one = boardRepository.getOne(1L);
-        Member member = one.getMember();
 
-
-        Board board = boardRepository.findByBoardNoAndUseYn(boardNo, true);
-
+        Board board = boardRepository.selectByBoardNoAndUseYn(boardNo, true);
         if (board == null) return null;
 
-        return BeanUtils.copyProperties(board, BoardResponse.class);
+        return copyBoardToBoardResponse(board);
     }
 
     @Transactional

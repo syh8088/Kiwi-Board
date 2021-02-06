@@ -29,7 +29,7 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
     @Override
     public List<Board> selectBoards(BoardsRequest boardsRequest) {
 
-        JPQLQuery<Board> postJPQLQuery = selectBoardJPQLQuery(boardsRequest);
+        JPQLQuery<Board> postJPQLQuery = selectBoardsJPQLQuery(boardsRequest);
 
         if (boardsRequest.getOffset() != null && boardsRequest.getLimit() != null) {
             postJPQLQuery
@@ -42,17 +42,19 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
 
     @Override
     public long selectCountBoards(BoardsRequest boardsRequest) {
-        JPQLQuery<Board> query = selectBoardJPQLQuery(boardsRequest);
+        JPQLQuery<Board> query = selectBoardsJPQLQuery(boardsRequest);
 
         return query.fetchCount();
     }
 
-    private JPQLQuery<Board> selectBoardJPQLQuery(BoardsRequest boardsRequest) {
+    private JPQLQuery<Board> selectBoardsJPQLQuery(BoardsRequest boardsRequest) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
         if (Strings.isNotEmpty(boardsRequest.getTitle())) {
             booleanBuilder.and(qBoard.title.like("%" + boardsRequest.getTitle() + "%"));
         }
+
+        booleanBuilder.and(qBoard.useYn.eq(true));
 
         return from(qBoard)
                 .leftJoin(qBoard.member, qMember).fetchJoin()
