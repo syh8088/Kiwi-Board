@@ -43,6 +43,11 @@ public class MemberService {
         return memberRepository.findByEmail(email) != null;
     }
 
+    public MemberResponse getMe(Long memberNo) {
+        Member member = memberRepository.getOne(memberNo);
+        return BeanUtils.copyProperties(member, MemberResponse.class);
+    }
+
     public byte[] getFile() throws IOException {
 
         Member member = memberRepository.findById("syh8088");
@@ -64,8 +69,4 @@ public class MemberService {
         return bytes;
     }
 
-    public MemberResponse getMe(Long memberNo) {
-        Member member = memberRepository.getOne(memberNo);
-        return BeanUtils.copyProperties(member, MemberResponse.class);
-    }
 }

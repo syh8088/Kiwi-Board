@@ -37,6 +37,8 @@ public class BoardRepositoryImpl extends QuerydslRepositorySupport implements Bo
                     .offset((boardsRequest.getOffset() - 1) * boardsRequest.getLimit());
         }
 
+        postJPQLQuery.orderBy(qBoard.boardNo.desc());
+
         return postJPQLQuery.fetch();
     }
 

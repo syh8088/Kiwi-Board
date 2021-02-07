@@ -3,7 +3,6 @@ package kiwi.board.member.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import kiwi.board.annotation.LoginUser;
-import kiwi.board.common.config.authentication.JwtTokenProvider;
 import kiwi.board.common.model.request.JwtUserRequest;
 import kiwi.board.member.model.request.SaveMemberRequest;
 import kiwi.board.member.model.response.MemberResponse;
@@ -26,7 +25,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final Validator validator;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping
     @ApiOperation(value = "회원가입", notes = "회원가입을 합니다.")

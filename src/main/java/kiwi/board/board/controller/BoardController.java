@@ -2,11 +2,13 @@ package kiwi.board.board.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import kiwi.board.annotation.LoginUser;
 import kiwi.board.board.model.request.BoardsRequest;
 import kiwi.board.board.model.request.SaveBoardRequest;
 import kiwi.board.board.model.request.UpdateBoardRequest;
 import kiwi.board.board.model.response.BoardResponse;
 import kiwi.board.board.service.BoardService;
+import kiwi.board.common.model.request.JwtUserRequest;
 import kiwi.board.util.validator.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,29 +41,29 @@ public class BoardController {
 
     @PostMapping
     @ApiOperation(value = "게시판 저장", notes = "게시판을 저장 합니다")
-    public ResponseEntity<?> saveBoard(@RequestBody SaveBoardRequest saveBoardRequest) {
+    public ResponseEntity<?> saveBoard(@LoginUser JwtUserRequest jwtUserRequest, @RequestBody SaveBoardRequest saveBoardRequest) {
 
         validator.saveBoard(saveBoardRequest);
 
-        boardService.saveBoard(saveBoardRequest);
+        boardService.saveBoard(jwtUserRequest.getMember_seq(), saveBoardRequest);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("{boardNo}")
     @ApiOperation(value = "게시판 수정", notes = "게시판을 수정 합니다")
-    public ResponseEntity<?> updateBoard(@PathVariable long boardNo, @RequestBody UpdateBoardRequest updateBoardRequest) {
+    public ResponseEntity<?> updateBoard(@LoginUser JwtUserRequest jwtUserRequest, @PathVariable long boardNo, @RequestBody UpdateBoardRequest updateBoardRequest) {
 
         validator.updateBoard(updateBoardRequest);
 
-        boardService.updateBoard(boardNo, updateBoardRequest);
+        boardService.updateBoard(jwtUserRequest.getMember_seq(), boardNo, updateBoardRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{boardNo}")
     @ApiOperation(value = "게시판 삭제", notes = "게시판을 식제 합니다")
-    public ResponseEntity<?> deleteBoard(@PathVariable long boardNo) {
+    public ResponseEntity<?> deleteBoard(@LoginUser JwtUserRequest jwtUserRequest, @PathVariable long boardNo) {
 
-        boardService.deleteBoard(boardNo);
+        boardService.deleteBoard(jwtUserRequest.getMember_seq(), boardNo);
         return ResponseEntity.noContent().build();
     }
 }

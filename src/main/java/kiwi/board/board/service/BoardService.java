@@ -94,23 +94,26 @@ public class BoardService {
     }
 
     @Transactional
-    public void saveBoard(SaveBoardRequest saveBoardRequest) {
+    public void saveBoard(long memberNo, SaveBoardRequest saveBoardRequest) {
 
         Board board = Board.createBoard(saveBoardRequest.getTitle(), saveBoardRequest.getContent());
 
-        Member one = memberRepository.getOne(1L);
-        // 임시 회원 적용
-        board.setMember(one);
+        Member member = memberRepository.getOne(memberNo);
+        board.setMember(member);
 
         boardRepository.save(board);
     }
 
     @Transactional
-    public void updateBoard(long boardNo, UpdateBoardRequest updateBoardRequest) {
-        Board board = boardRepository.findById(boardNo).orElse(null);
+    public void updateBoard(long memberNo, long boardNo, UpdateBoardRequest updateBoardRequest) {
+        Board board = boardRepository.selectByBoardNoAndUseYn(boardNo, true);
 
         if (board == null) {
             throw new BusinessException(BoardErrorCode.NOT_EXIST_BOARD);
+        }
+
+        if (board.getMember().getMemberNo() != memberNo) {
+            throw new BusinessException(BoardErrorCode.NOT_PERMISSION);
         }
 
         if (!updateBoardRequest.getTitle().isEmpty()) board.setTitle(updateBoardRequest.getTitle());
@@ -118,11 +121,15 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(long boardNo) {
-        Board board = boardRepository.findById(boardNo).orElse(null);
+    public void deleteBoard(long memberNo, long boardNo) {
+        Board board = boardRepository.selectByBoardNoAndUseYn(boardNo, true);
 
         if (board == null) {
             throw new BusinessException(BoardErrorCode.NOT_EXIST_BOARD);
+        }
+
+        if (board.getMember().getMemberNo() != memberNo) {
+            throw new BusinessException(BoardErrorCode.NOT_PERMISSION);
         }
 
         board.setUseYn(false);
