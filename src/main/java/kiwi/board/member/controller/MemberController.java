@@ -9,8 +9,13 @@ import kiwi.board.member.model.request.SaveMemberRequest;
 import kiwi.board.member.service.MemberService;
 import kiwi.board.util.validator.Validator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+
 
 @Api(tags = "Member", description = "회원 본문")
 @RestController
@@ -40,4 +45,16 @@ public class MemberController {
         System.out.println("jwtUserRequest = " + jwtUserRequest);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("file/test")
+    @ApiOperation(value = "파일 다운 TEST", notes = "파일 다운 TEST 합니다.")
+    public ResponseEntity<?> getFile() throws IOException {
+        byte[] file = memberService.getFile();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=test.srt")
+                .body(new ByteArrayResource(file));
+    }
+
+
 }
