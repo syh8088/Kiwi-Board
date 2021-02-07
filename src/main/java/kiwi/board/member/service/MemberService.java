@@ -1,10 +1,12 @@
 package kiwi.board.member.service;
 
+import kiwi.board.common.utils.BeanUtils;
 import kiwi.board.common.utils.JacksonUtils;
 import kiwi.board.config.Config;
 import kiwi.board.config.ConfigRepository;
 import kiwi.board.member.model.entity.Member;
 import kiwi.board.member.model.request.SaveMemberRequest;
+import kiwi.board.member.model.response.MemberResponse;
 import kiwi.board.member.repository.MemberRepository;
 import kiwi.board.role.model.entity.Role;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +62,10 @@ public class MemberService {
         byte[] bytes = baos.toByteArray();
 
         return bytes;
+    }
+
+    public MemberResponse getMe(Long memberNo) {
+        Member member = memberRepository.getOne(memberNo);
+        return BeanUtils.copyProperties(member, MemberResponse.class);
     }
 }

@@ -1,5 +1,6 @@
 package kiwi.board.common.config;
 
+import kiwi.board.common.model.request.JwtUserRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -16,6 +17,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(JwtUserRequest.class)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("kiwi.board"))
                 .paths(PathSelectors.any())

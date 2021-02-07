@@ -27,7 +27,7 @@ public class EncryptAspect {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Pointcut("execution(public * kiwi.board.board.repository..*.*(..))")
+    @Pointcut("execution(public * kiwi.board.member.repository..*.*(..))")
     public void mapper() {
     }
 

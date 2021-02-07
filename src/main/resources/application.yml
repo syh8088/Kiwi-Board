@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    driverClassName: org.mariadb.jdbc.Driver
+    driverClassName: com.mysql.jdbc.Driver
 
     sql-script-encoding: utf-8
   messages:

@@ -6,6 +6,7 @@ import kiwi.board.annotation.LoginUser;
 import kiwi.board.common.config.authentication.JwtTokenProvider;
 import kiwi.board.common.model.request.JwtUserRequest;
 import kiwi.board.member.model.request.SaveMemberRequest;
+import kiwi.board.member.model.response.MemberResponse;
 import kiwi.board.member.service.MemberService;
 import kiwi.board.util.validator.Validator;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +42,8 @@ public class MemberController {
     @ApiOperation(value = "회원 정보", notes = "회원 정보를 출력 합니다.")
     public ResponseEntity<?> getMe(@LoginUser JwtUserRequest jwtUserRequest) {
 
-
-        System.out.println("jwtUserRequest = " + jwtUserRequest);
-        return ResponseEntity.noContent().build();
+        MemberResponse memberResponse = memberService.getMe(jwtUserRequest.getMember_seq());
+        return (memberResponse == null) ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(memberResponse);
     }
 
     @GetMapping("file/test")
