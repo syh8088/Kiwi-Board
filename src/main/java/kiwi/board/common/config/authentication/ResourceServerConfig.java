@@ -2,7 +2,8 @@ package kiwi.board.common.config.authentication;
 
 import kiwi.board.common.config.authentication.factory.UrlResourcesMapFactoryBean;
 import kiwi.board.common.config.authentication.metadatasource.UrlFilterInvocationSecurityMetadataSource;
-import kiwi.board.resources.service.ResourceService;
+import kiwi.board.common.config.filters.PermitAllFilter;
+import kiwi.board.domain.resources.service.query.ResourceQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -25,7 +27,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -40,10 +42,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Value("${app.oauth.jwt.public-key}")
     private String jwtPublicKey;
 
+    private String[] permitAllResources = {"/", "/login", "/user/login/**"};
+
     private static final String ROOT_PATTERN = "/**";
 
     @Autowired
-    private ResourceService resourceService;
+    private ResourceQueryService resourceQueryService;
 
     @Bean
     public TokenStore tokenStore() {
@@ -94,17 +98,26 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return super.authenticationManagerBean();
     }*/
 
-    @Bean
+/*    @Bean
     public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
 
-        //PermitAllFilter permitAllFilter = new PermitAllFilter(permitAllResources);
         FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
-
         filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
         filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
        // filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
 
         return filterSecurityInterceptor;
+    }*/
+
+    @Bean
+    public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
+
+        PermitAllFilter permitAllFilter = new PermitAllFilter(permitAllResources);
+        permitAllFilter.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
+        permitAllFilter.setAccessDecisionManager(affirmativeBased());
+        //permitAllFilter.setAuthenticationManager(authenticationManagerBean());
+
+        return permitAllFilter;
     }
 
     private AccessDecisionManager affirmativeBased() {
@@ -113,19 +126,38 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
 
     private List<AccessDecisionVoter<? extends Object>> getAccessDecisionVoters() {
-        return Arrays.asList(new RoleVoter());
+
+        List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
+//        accessDecisionVoters.add(new IpAddressVoter(securityResourceService));
+
+        accessDecisionVoters.add(roleVoter());  // Role Hierarchy 이용하기
+        //accessDecisionVoters.add(new RoleVoter()); // Role Hierarchy 이용 안하기
+
+        return accessDecisionVoters;
+    }
+
+    @Bean
+    public AccessDecisionVoter<? extends Object> roleVoter() {
+        RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
+        return roleHierarchyVoter;
+    }
+
+    @Bean
+    public RoleHierarchyImpl roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        return roleHierarchy;
     }
 
     @Bean
     public FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() throws Exception {
         // return new UrlFilterInvocationSecurityMetadataSource();
-        return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject(), resourceService);
+        return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject(), resourceQueryService);
     }
 
     private UrlResourcesMapFactoryBean urlResourcesMapFactoryBean() {
 
         UrlResourcesMapFactoryBean urlResourcesMapFactoryBean = new UrlResourcesMapFactoryBean();
-        urlResourcesMapFactoryBean.setSecurityResourceService(resourceService);
+        urlResourcesMapFactoryBean.setSecurityResourceService(resourceQueryService);
 
         return urlResourcesMapFactoryBean;
     }

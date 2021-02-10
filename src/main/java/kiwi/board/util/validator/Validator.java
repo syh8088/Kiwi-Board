@@ -1,13 +1,12 @@
 package kiwi.board.util.validator;
 
-import kiwi.board.board.model.request.SaveBoardRequest;
-import kiwi.board.board.model.request.UpdateBoardRequest;
-import kiwi.board.board.service.BoardService;
+import kiwi.board.domain.board.model.request.SaveBoardRequest;
+import kiwi.board.domain.board.model.request.UpdateBoardRequest;
+import kiwi.board.domain.member.service.query.MemberQueryService;
 import kiwi.board.error.errorCode.BoardErrorCode;
 import kiwi.board.error.errorCode.MemberErrorCode;
 import kiwi.board.error.exception.BusinessException;
-import kiwi.board.member.model.request.SaveMemberRequest;
-import kiwi.board.member.service.MemberService;
+import kiwi.board.domain.member.model.request.SaveMemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.apache.commons.lang3.StringUtils;
@@ -17,8 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 @RequiredArgsConstructor
 public class Validator {
 
-    private final MemberService memberService;
-    private final BoardService boardService;
+    private final MemberQueryService memberQueryService;
 
     public void saveMember(SaveMemberRequest saveMemberRequest) {
 
@@ -30,11 +28,11 @@ public class Validator {
             throw new BusinessException(MemberErrorCode.NOT_VALID_PASSWORD_LENGTH);
         }
 
-        if (memberService.isAlreadyRegisteredId(saveMemberRequest.getId())) {
+        if (memberQueryService.isAlreadyRegisteredId(saveMemberRequest.getId())) {
             throw new BusinessException(MemberErrorCode.ALREADY_JOIN_ID);
         }
 
-        if (memberService.isAlreadyRegisteredEmail(saveMemberRequest.getEmail())) {
+        if (memberQueryService.isAlreadyRegisteredEmail(saveMemberRequest.getEmail())) {
             throw new BusinessException(MemberErrorCode.ALREADY_JOIN_EMAIL);
         }
     }

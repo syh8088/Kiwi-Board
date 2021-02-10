@@ -1,6 +1,6 @@
 package kiwi.board.common.config.authentication.metadatasource;
 
-import kiwi.board.resources.service.ResourceService;
+import kiwi.board.domain.resources.service.query.ResourceQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
@@ -14,11 +14,11 @@ import java.util.*;
 public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
     private LinkedHashMap<RequestMatcher, List<ConfigAttribute>> requestMap = new LinkedHashMap<>();
-    private ResourceService resourceService;
+    private ResourceQueryService resourceQueryService;
 
-    public UrlFilterInvocationSecurityMetadataSource(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourcesMap, ResourceService resourceService) {
+    public UrlFilterInvocationSecurityMetadataSource(LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourcesMap, ResourceQueryService resourceQueryService) {
         this.requestMap = resourcesMap;
-        this.resourceService = resourceService;
+        this.resourceQueryService = resourceQueryService;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
 
     public void reload() {
 
-        LinkedHashMap<RequestMatcher, List<ConfigAttribute>> reloadedMap = resourceService.getResourceList();
+        LinkedHashMap<RequestMatcher, List<ConfigAttribute>> reloadedMap = resourceQueryService.getResourceList();
         Iterator<Map.Entry<RequestMatcher, List<ConfigAttribute>>> iterator = reloadedMap.entrySet().iterator();
 
         requestMap.clear();
