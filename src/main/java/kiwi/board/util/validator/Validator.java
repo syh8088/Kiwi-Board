@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +28,19 @@ public class Validator {
         }
 
         if (saveMemberRequest.getPassword().length() < 10) {
+            throw new BusinessException(MemberErrorCode.NOT_VALID_ID_LENGTH);
+        }
+
+        if (saveMemberRequest.getId().length() < 5) {
             throw new BusinessException(MemberErrorCode.NOT_VALID_PASSWORD_LENGTH);
+        }
+
+        if (!isValidId(saveMemberRequest.getId())) {
+            throw new BusinessException(MemberErrorCode.NOT_VALID_ID);
+        }
+
+        if (!isValidEmail(saveMemberRequest.getEmail())) {
+            throw new BusinessException(MemberErrorCode.NOT_VALID_EMAIL);
         }
 
         if (memberQueryService.isAlreadyRegisteredId(saveMemberRequest.getId())) {
@@ -56,4 +71,35 @@ public class Validator {
             throw new BusinessException(BoardErrorCode.NOT_EXIST_TITLE_AND_CONTENT);
         }
     }
+
+    private boolean isValidEmail(String email) {
+
+        boolean isValid = false;
+
+        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+
+        return isValid;
+    }
+
+    private boolean isValidId(String id) {
+
+        boolean isValid = false;
+
+        String regex = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(id);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+
+        return isValid;
+    }
+
 }
