@@ -3,9 +3,9 @@ package kiwi.board.domain.board.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import kiwi.board.domain.board.model.entity.Board;
-import kiwi.board.board.model.entity.QBoard;
+import kiwi.board.domain.board.model.entity.QBoard;
 import kiwi.board.domain.board.model.request.BoardsRequest;
-import kiwi.board.member.model.entity.QMember;
+import kiwi.board.domain.member.model.entity.QMember;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
