@@ -2,6 +2,7 @@ package kiwi.board.common.config;
 
 import kiwi.board.annotation.LoginUserArgumentResolver;
 import kiwi.board.common.config.interceptor.RequestInterceptor;
+import kiwi.board.common.config.json.CustomObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

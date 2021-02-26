@@ -1,4 +1,4 @@
-package kiwi.board.common.config;
+package kiwi.board.common.config.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;

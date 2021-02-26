@@ -1,4 +1,4 @@
-package kiwi.board.common.config;
+package kiwi.board.common.config.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
