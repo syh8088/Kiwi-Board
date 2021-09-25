@@ -29,15 +29,20 @@ dependencies {
 	compile 'io.springfox:springfox-swagger-ui:2.9.+'
 
 	compile "org.springframework.boot:spring-boot-starter-security"
+	
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	/**
+	 * 	@EnableResourceServer 사용 안하기........
+	 */
+	/*
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.3.6.RELEASE'
 	compile group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.10.RELEASE'
 	compile 'io.jsonwebtoken:jjwt-api:0.10.7'
 	runtime 'io.jsonwebtoken:jjwt-impl:0.10.7',
-			// Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
-			//'org.bouncycastle:bcprov-jdk15on:1.60',
-			'io.jsonwebtoken:jjwt-jackson:0.10.7'
+			'io.jsonwebtoken:jjwt-jackson:0.10.7'*/
 
-	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 	
 	compileOnly 'org.projectlombok:lombok'

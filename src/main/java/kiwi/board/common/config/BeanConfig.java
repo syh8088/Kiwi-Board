@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
+/**
+ * 	@EnableResourceServer 사용 안하기........
+ */
+//@Configuration
 public class BeanConfig {
 
 	@Bean

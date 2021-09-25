@@ -1,5 +1,6 @@
 package kiwi.board.common.config.authentication;
 
+/*
 import kiwi.board.common.config.authentication.factory.UrlResourcesMapFactoryBean;
 import kiwi.board.common.config.authentication.metadatasource.UrlFilterInvocationSecurityMetadataSource;
 import kiwi.board.common.config.filters.PermitAllFilter;
@@ -29,6 +30,12 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 
 import java.util.ArrayList;
 import java.util.List;
+*/
+
+public class ResourceServerConfig {
+
+}
+/*
 
 @Slf4j
 @Configuration
@@ -93,21 +100,21 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         resources.resourceId(resourceId);
     }
 
-   /* @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }*/
-
-/*    @Bean
-    public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
-
-        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
-        filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
-        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
-       // filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
-
-        return filterSecurityInterceptor;
-    }*/
+//    @Bean
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
+//
+//    @Bean
+//    public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+//
+//        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+//        filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
+//        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
+//       // filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
+//
+//        return filterSecurityInterceptor;
+//    }
 
     @Bean
     public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
@@ -161,27 +168,28 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
         return urlResourcesMapFactoryBean;
     }
-/*
-    @Override
-    public void configure(final HttpSecurity http) throws Exception {
-    		http.
-    		anonymous().disable()
-    		.authorizeRequests()
-    		.antMatchers("/oauth/token/**").permitAll();
-    }
 
-    @Bean
-    public WebResponseExceptionTranslator exceptionTranslator() {
-        return new CustomRestErrorWebResponseExceptionTranslator();
-    }
+//    @Override
+//    public void configure(final HttpSecurity http) throws Exception {
+//    		http.
+//    		anonymous().disable()
+//    		.authorizeRequests()
+//    		.antMatchers("/oauth/token/**").permitAll();
+//    }
+//
+//    @Bean
+//    public WebResponseExceptionTranslator exceptionTranslator() {
+//        return new CustomRestErrorWebResponseExceptionTranslator();
+//    }
+//
+//    @Override
+//    public void configure(HttpSecurity http) throws Exception {
+//        http.
+//                anonymous().disable()
+//                .authorizeRequests()
+//                .antMatchers("/oauth/token/**").authenticated()
+//                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+//    }
 
-/*    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.
-                anonymous().disable()
-                .authorizeRequests()
-                .antMatchers("/oauth/token/**").authenticated()
-                .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
-    }
-*/
 }
+*/

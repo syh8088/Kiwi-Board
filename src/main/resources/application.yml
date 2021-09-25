@@ -4,7 +4,9 @@ server:
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-
+    url: jdbc:mysql://syh80882.cafe24.com/syh80882
+    username: syh80882
+    password: abc123!@
     sql-script-encoding: utf-8
   messages:
     basename: messages/messages, messages/error
@@ -40,6 +42,15 @@ app:
         -----END PUBLIC KEY-----
 
       expirationInMs: 604800000
+
+jwt:
+  secretKey: testtesttesttesttest42fwef234132412wqdfqwf12
+  refreshKey: testtesttesttesttest42fwef234132412wqdfqwf12vvdsvsd
+  signatureAlgorithm: HS256
+  accessTokenExpired: 604800 #(sec) 7 days
+  refreshTokenExpired: 6048000 #(sec) 7 days
+
+
 
 environments:
   server-url: http://127.0.0.1

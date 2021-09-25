@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
 
-    @Query("select r from Resource r join fetch r.roleSet where r.type = 'url' order by r.orderNum desc")
+    @Query("select r from Resource r join fetch r.roleSet where r.type = 'url' and r.useYn = true order by r.orderNum desc")
     List<Resource> findAllResources();
 }

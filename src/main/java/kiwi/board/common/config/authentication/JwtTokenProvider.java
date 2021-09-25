@@ -1,16 +1,21 @@
 package kiwi.board.common.config.authentication;
 
 import io.jsonwebtoken.*;
-import kiwi.board.common.model.request.JwtUserRequest;
-import org.codehaus.jackson.map.ObjectMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+
+/**
+ * 	@EnableResourceServer 사용 안하기........
+ */
+/*import kiwi.board.common.model.request.JwtUserRequest;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;*/
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,11 +32,14 @@ public class JwtTokenProvider {
     @Value("${app.oauth.jwt.expirationInMs}")
     private int jwtExpirationInMs;
 
-    public JwtUserRequest getJwtTokenByClientCredentialForUser(OAuth2Authentication auth) throws IOException {
+    /**
+     * 	@EnableResourceServer 사용 안하기........
+     */
+   /* public JwtUserRequest getJwtTokenByClientCredentialForUser(OAuth2Authentication auth) throws IOException {
         Jwt jwt = JwtHelper.decode(((OAuth2AuthenticationDetails) auth.getDetails()).getTokenValue());
         String jwtClaims = jwt.getClaims();
         return new ObjectMapper().readValue(jwtClaims, JwtUserRequest.class);
-    }
+    }*/
 
     public String generateToken(Authentication authentication) {
 
