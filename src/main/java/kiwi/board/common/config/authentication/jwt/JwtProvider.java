@@ -1,7 +1,8 @@
-package kiwi.board.common.config.authentication;
+package kiwi.board.common.config.authentication.jwt;
 
 import io.jsonwebtoken.*;
 
+import kiwi.board.common.config.authentication.model.transfer.AppUserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +19,12 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;*/
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider {
+public class JwtProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
     @Value("${app.oauth.jwt.public-key}")
     private String jwtSecret;

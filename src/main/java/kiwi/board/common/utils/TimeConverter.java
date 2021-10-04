@@ -1,11 +1,11 @@
-package kiwi.board.common.config.filters;
+package kiwi.board.common.utils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class DateConvertor {
+public class TimeConverter {
 
     public static Date toDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());

@@ -47,8 +47,8 @@ jwt:
   secretKey: testtesttesttesttest42fwef234132412wqdfqwf12
   refreshKey: testtesttesttesttest42fwef234132412wqdfqwf12vvdsvsd
   signatureAlgorithm: HS256
-  accessTokenExpired: 604800 #(sec) 7 days
-  refreshTokenExpired: 6048000 #(sec) 7 days
+  accessTokenExpired: 604800
+  refreshTokenExpired: 6048000
 
 
 

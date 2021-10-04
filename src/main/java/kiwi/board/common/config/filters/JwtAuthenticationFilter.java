@@ -1,5 +1,8 @@
 package kiwi.board.common.config.filters;
 
+import kiwi.board.common.config.authentication.jwt.JwtTokenProvider;
+import kiwi.board.common.config.authentication.model.transfer.PrincipalDetails;
+import kiwi.board.common.config.handler.UserServiceHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +24,7 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserServiceHandler userServiceHandler;
-    private final JwtProvider jwtProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -29,11 +32,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        Optional<String> optAccessToken = Optional.ofNullable(request.getHeader("access_token"));
+        Optional<String> optAccessToken = Optional.ofNullable(request.getHeader("accessToken"));
 
-        if(optAccessToken.isPresent()){
+        if (optAccessToken.isPresent()) {
             jwt = optAccessToken.get();
-            username = jwtProvider.extractUsernameByAccessToken(jwt);
+            username = jwtTokenProvider.extractUsernameByAccessToken(jwt);
         }
 
         /**
@@ -41,14 +44,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
          * SecurityContextHolder 내에 authentication 객체(이전에 인증된 정보)가 없는 상태인지를 검사한다.
          */
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetailsImpl userDetails = (UserDetailsImpl) userServiceHandler.loadUserByUsername(username);
+            PrincipalDetails principalDetails = (PrincipalDetails) userServiceHandler.loadUserByUsername(username);
 
-            //토큰이 유효하다면
-            if (jwtProvider.validateAccessToken(jwt, userDetails.getUsername())) {
-                //새로운 인증 정보를 생성
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            if (jwtTokenProvider.validateAccessToken(jwt, principalDetails.getUsername())) {
+
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(
+                                principalDetails,
+                                null,
+                                principalDetails.getAuthorities()
+                        );
+
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                //인증 정보를 SecurityContextHolder 에 저장
+
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }

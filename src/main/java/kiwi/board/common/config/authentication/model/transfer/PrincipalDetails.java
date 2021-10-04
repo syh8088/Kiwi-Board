@@ -1,5 +1,6 @@
-package kiwi.board.common.config.filters;
+package kiwi.board.common.config.authentication.model.transfer;
 
+import kiwi.board.domain.member.enums.MemberType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDetailsImpl implements UserDetails {
+public class PrincipalDetails implements UserDetails {
 
     private Long id;
     private String name;
@@ -23,7 +24,7 @@ public class UserDetailsImpl implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     @Builder
-    public UserDetailsImpl(Long id, String name, String email, String username, String password, MemberType memberType, Collection<? extends GrantedAuthority> authorities) {
+    public PrincipalDetails(Long id, String name, String email, String username, String password, MemberType memberType, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.email = email;

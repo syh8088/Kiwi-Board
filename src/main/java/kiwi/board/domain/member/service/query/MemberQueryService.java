@@ -21,6 +21,10 @@ public class MemberQueryService {
 
     private final MemberRepository memberRepository;
 
+    public Member selectMemberById(String username) {
+        return memberRepository.findByIdAndUseYn(username, true);
+    }
+
     public boolean isAlreadyRegisteredId(String id) {
         return memberRepository.findById(id) != null;
     }

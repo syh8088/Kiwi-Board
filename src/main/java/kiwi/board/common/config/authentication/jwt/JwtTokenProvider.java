@@ -1,7 +1,9 @@
-package kiwi.board.common.config.filters;
+package kiwi.board.common.config.authentication.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import kiwi.board.common.utils.TimeConverter;
+import kiwi.board.common.config.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +14,7 @@ import java.util.function.Function;
 
 @Component
 @RequiredArgsConstructor
-public class JwtProvider {
+public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
 
@@ -21,7 +23,7 @@ public class JwtProvider {
     }
 
     public LocalDateTime extractExpirationByAccessToken(String token) {
-        return DateConvertor.toLocalDateTime(extractClaim(token, jwtProperties.getSecretKey(), Claims::getExpiration));
+        return TimeConverter.toLocalDateTime(extractClaim(token, jwtProperties.getSecretKey(), Claims::getExpiration));
     }
 
     private Boolean isAccessTokenExpired(String token) {
@@ -33,7 +35,7 @@ public class JwtProvider {
     }
 
     public LocalDateTime extractExpirationByRefreshToken(String token) {
-        return DateConvertor.toLocalDateTime(extractClaim(token, jwtProperties.getRefreshKey(), Claims::getExpiration));
+        return TimeConverter.toLocalDateTime(extractClaim(token, jwtProperties.getRefreshKey(), Claims::getExpiration));
     }
 
     private Boolean isRefreshTokenExpired(String token) {
@@ -67,8 +69,8 @@ public class JwtProvider {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuedAt(DateConvertor.toDate(LocalDateTime.now()))
-                .setExpiration(DateConvertor.toDate(expiryDate))
+                .setIssuedAt(TimeConverter.toDate(LocalDateTime.now()))
+                .setExpiration(TimeConverter.toDate(expiryDate))
                 .signWith(jwtProperties.getSignatureAlgorithm(), key)
                 .compact();
     }

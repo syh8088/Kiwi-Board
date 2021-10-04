@@ -1,4 +1,4 @@
-package kiwi.board.common.config.authentication;
+package kiwi.board.common.config.authentication.model.transfer;
 
 import lombok.Getter;
 import lombok.Setter;

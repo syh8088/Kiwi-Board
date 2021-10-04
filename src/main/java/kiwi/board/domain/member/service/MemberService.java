@@ -7,9 +7,11 @@ import kiwi.board.domain.member.model.request.SaveMemberRequest;
 import kiwi.board.domain.member.repository.MemberRepository;
 import kiwi.board.domain.role.model.entity.Role;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor

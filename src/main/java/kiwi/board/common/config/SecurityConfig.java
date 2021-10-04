@@ -1,7 +1,10 @@
-package kiwi.board.common.config.filters;
+package kiwi.board.common.config;
 
 import kiwi.board.common.config.authentication.factory.UrlResourcesMapFactoryBean;
 import kiwi.board.common.config.authentication.metadatasource.UrlFilterInvocationSecurityMetadataSource;
+import kiwi.board.common.config.filters.JwtAuthenticationFilter;
+import kiwi.board.common.config.filters.PermitAllFilter;
+import kiwi.board.common.config.handler.UserServiceHandler;
 import kiwi.board.domain.resources.service.query.ResourceQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -39,10 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserServiceHandler userServiceHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final ResourceQueryService resourceQueryService;
-    /*
-         AuthenticationManager 에서 authenticate 메소드를 실행할때
-         내부적으로 사용할 UserDetailsService 와 PasswordEncoder 를 설정
-    */
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userServiceHandler).passwordEncoder(passwordEncoder());
@@ -50,31 +50,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() //세션 사용 x
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .csrf().disable()
                 .cors().disable()
                 .formLogin().disable()
-                .logout().disable() // '/logout' uri 를 사용하기 위한 설정
+                .logout().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                //.antMatchers("/csrf-token").permitAll()
-                //.antMatchers(HttpMethod.POST, "/authorize", "/authorize/refresh", "/users").anonymous()
-                .antMatchers(HttpMethod.POST, "/oauth2/unlink").authenticated()
-                //.antMatchers("/oauth2/**").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
 
-        //로그인 인증을 진행하는 필터 이전에 jwtAuthenticationFilter 가 실행되도록 설정
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-                //CSRF 필터 설정
-                //.addFilterBefore(new StatelessCSRFFilter(), CsrfFilter.class);
-
         http.addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }
 
-    /*PasswordEncoder를 BCryptPasswordEncoder로 사용하도록 Bean 등록*/
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

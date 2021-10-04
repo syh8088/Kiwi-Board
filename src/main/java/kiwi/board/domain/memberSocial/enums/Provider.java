@@ -1,4 +1,4 @@
-package kiwi.board.domain.memberSocial;
+package kiwi.board.domain.memberSocial.enums;
 
 import lombok.Getter;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package kiwi.board.annotation;
 
-import kiwi.board.common.config.filters.JwtProvider;
-import kiwi.board.common.config.filters.UserDetailsImpl;
+import kiwi.board.common.config.authentication.jwt.JwtTokenProvider;
+import kiwi.board.common.config.authentication.model.transfer.PrincipalDetails;
 import kiwi.board.common.model.request.JwtUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -20,8 +20,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     /**
      * 	@EnableResourceServer 사용 안하기........
      */
-    //private final JwtTokenProvider jwtTokenProvider;
-    private final JwtProvider jwtProvider;
+    //private final JwtProvider jwtProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -43,8 +43,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
         */
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
+        PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
 
         JwtUserRequest jwtUserRequest = JwtUserRequest.builder()
                 .member_seq(userDetails.getId())
@@ -53,6 +52,5 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                 .build();
 
         return jwtUserRequest;
-
     }
 }

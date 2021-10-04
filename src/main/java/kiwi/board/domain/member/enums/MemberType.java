@@ -1,4 +1,4 @@
-package kiwi.board.common.config.filters;
+package kiwi.board.domain.member.enums;
 
 import lombok.Getter;
 
@@ -21,7 +21,7 @@ public enum MemberType {
     }
 
     public static MemberType getByMemberType(String memberType) {
-        return Arrays.stream(MemberType.values())
+        return Arrays.stream(values())
                 .filter(data -> data.getMemberType().equals(memberType))
                 .findFirst()
                 .orElse(MemberType.DEFAULT);

@@ -1,7 +1,8 @@
-package kiwi.board.domain.memberSocial;
+package kiwi.board.domain.memberSocial.model.entity;
 
 import kiwi.board.common.model.entity.CommonExclusionOfUseYn;
 import kiwi.board.domain.member.model.entity.Member;
+import kiwi.board.domain.memberSocial.enums.Provider;
 import lombok.*;
 
 import javax.persistence.*;

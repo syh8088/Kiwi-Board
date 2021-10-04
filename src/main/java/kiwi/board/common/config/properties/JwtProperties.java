@@ -1,4 +1,4 @@
-package kiwi.board.common.config.filters;
+package kiwi.board.common.config.properties;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Getter;
