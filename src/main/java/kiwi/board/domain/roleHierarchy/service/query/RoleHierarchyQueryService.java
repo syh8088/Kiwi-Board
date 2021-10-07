@@ -16,22 +16,24 @@ public class RoleHierarchyQueryService {
 
     private final RoleHierarchyRepository roleHierarchyRepository;
 
-    public String findAllHierarchy() {
+    public String selectHierarchies() {
 
         List<RoleHierarchy> rolesHierarchy = roleHierarchyRepository.findAll();
 
-        Iterator<RoleHierarchy> itr = rolesHierarchy.iterator();
-        StringBuilder concatedRoles = new StringBuilder();
-        while (itr.hasNext()) {
-            RoleHierarchy roleHierarchy = itr.next();
+        Iterator<RoleHierarchy> roleHierarchyIterator = rolesHierarchy.iterator();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        while (roleHierarchyIterator.hasNext()) {
+
+            RoleHierarchy roleHierarchy = roleHierarchyIterator.next();
             if (roleHierarchy.getParentName() != null) {
-                concatedRoles.append(roleHierarchy.getParentName().getChildName());
-                concatedRoles.append(" > ");
-                concatedRoles.append(roleHierarchy.getChildName());
-                concatedRoles.append("\n");
+                stringBuilder.append(roleHierarchy.getParentName().getChildName());
+                stringBuilder.append(" > ");
+                stringBuilder.append(roleHierarchy.getChildName());
+                stringBuilder.append("\n");
             }
         }
 
-        return concatedRoles.toString();
+        return stringBuilder.toString();
     }
 }

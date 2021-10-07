@@ -16,7 +16,7 @@ public class SecurityInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        String allHierarchy = roleHierarchyQueryService.findAllHierarchy();
+        String allHierarchy = roleHierarchyQueryService.selectHierarchies();
         roleHierarchy.setHierarchy(allHierarchy);
     }
 }

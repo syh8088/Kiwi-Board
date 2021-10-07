@@ -37,7 +37,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private String[] permitAllResources = {"/", "/login", "/user/login/**"};
+    private String[] permitAllResources = {"/", "/categories"};
 
     private final UserServiceHandler userServiceHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
