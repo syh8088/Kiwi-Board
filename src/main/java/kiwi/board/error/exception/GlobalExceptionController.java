@@ -17,7 +17,7 @@ public class GlobalExceptionController {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public String handleException() {
+    public String handleException(Exception e) {
         return "error";
     }
 
